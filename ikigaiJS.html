@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>ikigaiJS</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <style type="text/css">
+
+    body{
+      padding: 10px;
+      width: calc(100vw - 20px);
+      height: calc(100vh - 20px);
+      margin: 0px;
+      background: black;
+      text-align: center;
+      overflow: scroll;
+      scrollbar-width: thin;          /* "auto" or "thin" */
+  scrollbar-color: blue orange;   /* scroll thumb and track */
+    }
+    
+    body::-webkit-scrollbar {
+      width: 16px;
+      height: 16px;              /* width of the entire scrollbar */
+    }
+
+    *::selection{
+      background: red;
+      color: black;
+    }
+body::-webkit-scrollbar-track {
+  background: transparent
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: transparent;    /* color of the scroll thumb */
+  border: 1px solid lime;  /* creates padding around scroll thumb */
+}
+
+    input{
+      accent-color: green;
+    }
+
+    
+
+    #div_top{
+      background: black;
+      border: none;
+      border-bottom: 1px solid green;
+      color: lime;
+      padding: 5px;
+      width: calc(100% - 16px);
+      height: 32px;
+      font-size: 2em;
+      font-family: "Bonzai";
+      text-align: left;
+    }
+
+    #div_herramientas{
+      width: calc(100%);
+      height: 32px; 
+      font-size: 1.5em;
+      border: none;
+      text-align: left;
+    }
+
+    button{
+      position: inherit;
+      padding: 2px;
+      margin: 0px;
+      width: 64px;
+      cursor: pointer;
+      background: black;
+      color: lime;
+      border: 1px solid green;
+    }
+
+    iframe{
+      position: relative;
+      background: black;
+      width: auto;
+      height: auto;
+      min-width: 10px;
+      max-width: 98%;
+      margin-top: 2px;
+      border: 1px solid green;
+      resize: both;
+      overflow: hidden;
+    }
+
+    #botones_eventos{
+      position: relative;
+      margin: 0px auto;
+      width: 65%;
+      height: 20px;
+      text-align: left;
+      border: none;
+      z-index: 5;
+      margin-bottom: 5px;
+    }
+
+    textarea{
+      text-align: left;
+      padding: 0px;
+      padding: 1em;
+      padding-left: 2em;
+      margin: 0px;
+      background: rgb(40,41,35);
+      background: black;
+      border: 1px solid green;
+      border-radius: 5px;
+      width: calc(75% - 7em);
+      min-height: 40%;
+      left: calc(12% + 3px);
+      font-size: 1em;
+      font-family: "Arial";
+      color: lime;
+      flex: auto;
+      padding-bottom: 64px;
+      resize: none;
+      }
+
+      #div_mensaje{
+        padding: 5px;
+        display: none;
+        background: black;
+        color: lime;
+        position: fixed;
+        border-radius: 5px;
+        border: 1px solid lime;
+        left: 10px;
+        bottom: 10px;
+      }
+
+      .menuFlotante{
+        display: none;
+        background: rgba(0,0,0,0.80);
+        padding: 10px;
+        position: absolute;
+        z-index: 20;
+        border: 1px solid green;
+        color: lime;
+        height: auto;
+        width: auto;
+        max-width: 256px;
+      }
+
+      .menuFlotante_opciones{
+        text-align: left;
+        border: 1px solid transparent;
+      }
+
+      .menuFlotante_opciones:hover{
+        border: 1px solid green;
+      }
+      input{
+        color: lime;
+        background: black;
+        border: 1px solid green;
+        padding: 2px;
+        width: calc(100% - 2px - 4px);
+        margin: 0px;
+      }
+
+      hr{
+       color: green;
+       border: 0px;
+       border-bottom: 1px solid green;
+      }
+
+      table{
+        margin: 0px auto;
+        width: 100%;
+        padding: 0px;
+        text-align: center;
+      }
+      td{
+        width: 50%;
+      }
+
+      #c1{
+        width: 50%;
+        text-align: right;
+
+      }
+
+      #c2{
+        width:50%;
+      }
+
+    @media (orientation: portrait) {
+
+      iframe{
+        margin-left: 2px;
+      }
+
+      textarea{
+        padding-left: 1em;
+        width: calc(99% - 3em);
+      }
+
+      .menuFlotante{
+        left: 2px;
+      }
+    }
+
+
+  </style>
+</head>
+<body>
+
+<div id="div_top">ikigaiJS</div>
+<div class="menuFlotante" id="menuFlotante"></div>
+<div class="menuFlotante" id="menuFlotante2"></div>
+
+<div id="div_herramientas">
+  <button id="button_opciones">Opciones</button>
+  <button id="button_tools">Tools</button>
+  <button id="button_play">Play</button>
+  <button id="button_fs">Fs</button>
+
+</div> 
+
+  <iframe id="mi-iframe" width="853" height="480"></iframe>
+  <div id="botones_eventos">
+      <button id="button_create">Create</button>
+      <button id="button_draw">Draw</button>
+  </div>
+  <textarea id="textarea"></textarea>
+  <div id="div_mensaje"></div>
+
+
+
+<script>
+
+/*
+var body = document.body;
+var color_letra = "lime";
+var color_borde = "green";
+var color_fondo = "black";
+const elementos = document.querySelectorAll("*");
+var textarea = document.getElementById("textarea");
+textarea.style.borderColor = color_borde;
+
+elementos.forEach((elemento) => {
+  elemento.style.backgroundColor = "transparent";
+  elemento.style.color = color_letra;
+  elemento.style.borderColor = color_borde;
+});
+
+body.style.background = color_fondo;
+
+var elementos_xx = "";
+*/
+
+/*
+function confirmar(){
+  elementos_xx = document.querySelectorAll("hr");
+
+elementos_xx.forEach((elemento) => {
+  elemento.style.borderColor = "blue";
+  elemento
+});
+
+var elementosInputs = document.querySelectorAll("input");
+
+elementosInputs.forEach((elemento) => {
+  elemento.style.setProperty("accent-color", "red");
+});
+
+}
+
+
+setInterval(confirmar,1000/30)
+//*/
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  function string_replace_all(str,substr,newstr){var str2 = str;var existe = str2.split(substr).length-1;if(existe)
+{var length_substr = substr.length;var pos = 0;var length = 0;var lista = [];while(existe){pos = str2.indexOf(substr)+1;lista.push(str2.substr(0,pos-1));lista.push(newstr);
+length = str2.length;str2 = str2.substr(pos+length_substr-1,length-pos-length_substr+1);existe = str2.split(substr).length-1;};lista.push(str2);str2 = "";for(var i = 0; i<lista.length; i++){str2+=lista[i];}}return str2;}
+
+
+function copiarAlPortaPapeles(str) {
+var temp = document.createElement("textarea");
+temp.id = "textarea_x";
+temp.value = str;
+document.body.appendChild(temp);
+temp.select()
+document.execCommand("COPY")
+temp.parentNode.removeChild(temp);
+mostrarMensaje("Copiado al porta papeles");
+}
+</script>
+
+<script>
+  // controlMouse.js
+
+var isTouchDevice ='ontouchstart' in window;
+var document_mouse_x = 0;
+var document_mouse_y = 0;
+var mouse_button = false;
+
+function mouseAction(e) {if (isTouchDevice) {
+  if(e.type != "touchend"){document_mouse_x = Math.floor(e.touches[0].pageX);
+    document_mouse_y = Math.floor(e.touches[0].pageY)}}
+    else{document_mouse_x = Math.floor(e.pageX);
+    document_mouse_y = Math.floor(e.pageY);}
+if(e.type != "touchmove" && e.type != "mousemove"){mouse_button = isTouchDevice? e.touches[0].buttons : e.buttons}}
+
+if(isTouchDevice) {
+  document.addEventListener("touchstart", mouseAction, false);
+  document.addEventListener("touchmove", mouseAction, false);
+  document.addEventListener("touchend", mouseAction, false);}
+  else {
+  document.addEventListener("mousedown", mouseAction, false);
+  document.addEventListener("mousemove", mouseAction, false);
+  document.addEventListener("mouseup", mouseAction, false);}
+
+function mouse_in_element(element){
+  var globalX = document_mouse_x - element.offsetLeft;
+  var globalY = document_mouse_y - element.offsetTop;
+  var relativeX = Math.floor(globalX * element.width / element.offsetWidth);
+  var relativeY = Math.floor(globalY * element.height / element.offsetHeight);
+  return {"globalX":globalX,"globalY":globalY,"relativeX":relativeX,"relativeY":relativeY}}
+
+function addClickListener(element, handler) {
+  if ('ontouchstart' in window) {element.addEventListener("touchstart", handler)} 
+  else {element.addEventListener("click", handler)}}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+var stringM = `<!DOCTYPE html> 
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <title>Html5 game</title>
+
+  <style>
+    *{
+      background: black;
+    }
+
+  body{
+    background: black;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    left: 0px;
+    top: 0px;
+    margin: 0px;
+    padding: 0px;
+
+    color:white;
+    border: 0px;
+    overflow: hidden;
+
+  }
+
+  canvas{
+   image-rendering: pixelated;
+   background-color: gray;
+   position: absolute;
+   left: 0px;
+   margin: 0px;
+  }
+</style>
+
+</head>
+
+<body>
+<canvas id="mi-canvas" width="640" height="480"></canvas>
+
+<star_script type="text/javascript">
+//Bloquear menu contextual boton derecho xx
+document.addEventListener("contextmenu", function(event) {
+  event.preventDefault();
+});
+<end_script>
+
+<star_script>
+// controlMouse.js
+
+var isTouchDevice ='ontouchstart' in window;
+var document_mouse_x = 0;
+var document_mouse_y = 0;
+var mouse_button = false;
+
+function mouseAction(e) {if (isTouchDevice) {
+  if(e.type != "touchend"){document_mouse_x = Math.floor(e.touches[0].pageX);
+    document_mouse_y = Math.floor(e.touches[0].pageY)}}
+    else{document_mouse_x = Math.floor(e.pageX);
+    document_mouse_y = Math.floor(e.pageY);}
+if(e.type != "touchmove" && e.type != "mousemove"){mouse_button = e.buttons}}
+
+if(isTouchDevice) {
+  document.addEventListener("touchstart", mouseAction, false);
+  document.addEventListener("touchmove", mouseAction, false);
+  document.addEventListener("touchend", mouseAction, false);}
+  else {
+  document.addEventListener("mousedown", mouseAction, false);
+  document.addEventListener("mousemove", mouseAction, false);
+  document.addEventListener("mouseup", mouseAction, false);}
+
+function mouse_in_element(element){
+  var globalX = document_mouse_x - element.offsetLeft;
+  var globalY = document_mouse_y - element.offsetTop;
+  var relativeX = Math.floor(globalX * element.width / element.offsetWidth);
+  var relativeY = Math.floor(globalY * element.height / element.offsetHeight);
+  return {"globalX":globalX,"globalY":globalY,"relativeX":relativeX,"relativeY":relativeY}}
+
+function addClickListener(element, handler) {
+  if ('ontouchstart' in window) {element.addEventListener("touchstart", handler)} 
+  else {element.addEventListener("click", handler)}}
+
+<end_script>
+
+<star_script>
+//canvas.js
+const body = document.body;
+const canvas = document.querySelector('#mi-canvas');
+const ctx = canvas.getContext('2d');
+ctx.pixelated = true;
+
+canvas.widthLandscape = 512;
+canvas.heightLandscape = 512;
+canvas.widthPortrait = 512;
+canvas.heightPortrait = 512;
+canvas.borderColor = "transparent";
+canvas.borderSize = 0;
+canvas.borderRadius = 0;
+canvas.adaptar = false;
+canvas.limitar = false;
+canvas.cover = false;
+canvas.strech = false;
+canvas.centerH = false;
+canvas.centerV = false;
+
+//#-codigoConfiguracion:
+
+canvas.style.border = canvas.borderSize+"px solid "+canvas.borderColor;
+canvas.style.borderRadius = canvas.borderRadius+"px";
+
+function onResize() {
+  canvas.width = canvas.widthLandscape;
+  canvas.height = canvas.heightLandscape;
+  if(body.offsetWidth<body.offsetHeight){
+    canvas.width = canvas.widthPortrait;
+    canvas.height = canvas.heightPortrait;}
+
+  if(canvas.adaptar){canvas.width = body.offsetWidth - canvas.borderSize*2;
+    canvas.height = body.offsetHeight - canvas.borderSize*2}
+
+  if(canvas.limitar){
+    var proporcion = canvas.width/canvas.height;
+    var width = body.offsetWidth;
+    while((width + canvas.borderSize*2)>body.offsetWidth){width-=1}
+    var height = width/proporcion;
+    while((height + canvas.borderSize*2)>body.offsetHeight){width-=1;height = width/proporcion;}
+    canvas.style.width = width+"px";canvas.style.height = height+"px";}
+
+ if(canvas.cover){
+    var proporcion = canvas.width/canvas.height;
+    var width = canvas.offsetWidth;
+    while((width + canvas.borderSize*2)<body.offsetWidth || frac((width + canvas.borderSize*2)/2)!=0){width+=1}
+    var height = width/proporcion;
+    while((height + canvas.borderSize*2)<body.offsetHeight || frac((height + canvas.borderSize*2)/2)!=0){width+=1;height = width/proporcion}
+    canvas.style.width = width+"px";canvas.style.height = height+"px";}
+
+  if(canvas.strech){
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    }
+
+  if(canvas.centerV){var top = (body.offsetHeight-(canvas.offsetHeight + canvas.borderSize*2))/2;
+    canvas.style.top = top+"px";}
+  if(canvas.centerH){var left = (body.offsetWidth-(canvas.offsetWidth + canvas.borderSize*2))/2;
+    canvas.style.left = left+"px";}}
+
+window.addEventListener("resize", onResize);
+<end_script>
+
+
+<star_script>
+
+//gml.js
+// Declarar las variables de los colores
+const c_aqua = "#00ffff";
+const c_black = "#000000";
+const c_blue = "#0000ff";
+const c_dkgray = "#444444";
+const c_fuchsia = "#ff00ff";
+const c_gray = "#808080";
+const c_green = "#00ff00";
+const c_lime = "#00ff00";
+const c_ltgray = "#cccccc";
+const c_maroon = "#800000";
+const c_navy = "#000080";
+const c_olive = "#808000";
+const c_purple = "#800080";
+const c_red = "#ff0000";
+const c_silver = "#c0c0c0";
+const c_teal = "#008080";
+const c_white = "#ffffff";
+const c_yellow = "#ffff00";
+
+var background_color = c_gray;
+var image_alpha = 1;
+
+var brush_color = c_white;
+
+var font_color = c_black;
+var fs_normal = ' ';
+var fs_bold = ' bold ';
+var fs_italic = ' italic ';
+var fs_bolditalic = ' bold italic ';
+var font_style = fs_normal;
+var fa_left = "left";
+var fa_center = "center";
+var fa_right = "right";
+var font_align = fa_left;
+var font_angle = 0;
+var font_size = 8;
+var font_name = "MS sans Serif";
+
+var pen_size = 1;
+var pen_color = c_black;
+
+var score = 0;
+var room_width = canvas.width;
+var room_height = canvas.height;
+var room_caption = "";
+
+var x = 0;
+var y = 0;
+var mouse_x = 0;
+var mouse_y = 0;
+var direction = 0;
+
+var pi = 3.14;
+
+function random(x) {return Math.random() * x}
+function abs(x) {return Math.abs(x)}
+function sign(x) {return Math.sign(x)}
+function round(x) {return Math.round(x)}
+function floor(x) {return Math.floor(x)}
+function ceil(x) {return Math.ceil(x)}
+function frac(x) {return x - Math.floor(x)}
+function sqrt(x) {return Math.sqrt(x)}
+function sqr(x) {return x * x}
+function power(x, n) {return Math.pow(x, n)}
+function exp(x) {return Math.exp(x)}
+function ln(x) {return Math.log(x)}
+function log2(x) {return Math.log2(x)}
+function log10(x) {return Math.log10(x)}
+function logn(n, x) {return Math.log(x) / Math.log(n)}
+function sin(x) {return Math.sin(x)}
+function cos(x) {return Math.cos(x)}
+function tan(x) {return Math.tan(x)}
+function arcsin(x) {return Math.asin(x)}
+function arccos(x) {return Math.acos(x)}
+function arctan(x) {return Math.atan(x)}
+function degtorad(x) {return x * Math.PI / 180}
+function radtodeg(x) {return x * 180 / Math.PI}
+function min(x, y) {return Math.min(x, y)}
+function radtodeg(x) {return x * 180 / Math.PI}
+function min(x, y) {return Math.min(x, y)}
+function max(x, y) {return Math.max(x, y)}
+function min3(x, y, z) {return Math.min(x, Math.min(y, z))}
+function max3(x, y, z) {return Math.max(x, Math.max(y, z))}
+function mean(x, y) {return (x + y) / 2}
+
+function point_distance(x1, y1, x2, y2) {return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));}
+
+function point_direction(x1, y1, x2, y2) {var angle = Math.atan2(y2 - y1, x2 - x1);return angle * 180 / Math.PI;}
+
+function chr(val){return String.fromCodePoint(val)}
+function ord(str){return str.charCodeAt()}
+function real(str){return Number(str)}
+function string(data){return String(data)}
+function string_length(str){return str.length}
+function string_pos(substr,str){return str.indexOf(substr)+1;}
+function string_copy(str,index,count){num=index-1;return str.substr(num,count)}
+function string_delete(str,index,count){str1 = str.substr(0, index);str2 = str.substr(index+count, str.length-count);str3 = str1+str2;return str3;}
+function string_insert(substr,str,index){num=index-1;return str.slice(0, num) + substr + str.slice(num);}
+function string_replace(str,substr,newstr){return str.replace(substr,newstr);}
+function string_replace_all(str,substr,newstr){var str2 = str;var existe = str2.split(substr).length-1;if(existe)
+{var length_substr = substr.length;var pos = 0;var length = 0;var lista = [];while(existe){pos = str2.indexOf(substr)+1;lista.push(str2.substr(0,pos-1));lista.push(newstr);
+length = str2.length;str2 = str2.substr(pos+length_substr-1,length-pos-length_substr+1);existe = str2.split(substr).length-1;};lista.push(str2);str2 = "";for(var i = 0; i<lista.length; i++){str2+=lista[i];}}return str2;}
+function string_count(substr,str){contador=0;while(str.includes(substr)){str=str.replace(substr,"");contador+=1;}return contador;}
+ function string_lower(str){return str.toLowerCase();}
+function string_upper(str){return str.toUpperCase();}
+function string_digits(str){return str.replace(/\D/g,"");}
+function string_letters(str){return str.replace(/\d/g,"");}
+function string_repeat(str,count){return str.repeat(count);}
+function string_lettersdigits(str){return str.replace(/[^a-zA-Z]/g, "");}
+function execute_string(string) {return eval(string)}
+
+function draw_pixel(x, y) {ctx.fillStyle = pen_color;ctx.globalAlpha = image_alpha;ctx.fillRect(x, y, pen_size, pen_size);}
+
+function draw_circle(x, y, r) {ctx.strokeStyle = pen_color;ctx.fillStyle = brush_color;ctx.lineWidth = pen_size;ctx.globalAlpha = image_alpha;ctx.beginPath();ctx.arc(x, y, r, 0, 2 * Math.PI);ctx.fill();ctx.stroke();}
+
+function draw_line(x1, y1, x2, y2) {ctx.strokeStyle = pen_color;  ctx.lineWidth = pen_size;
+ctx.globalAlpha = image_alpha;ctx.beginPath();ctx.moveTo(x1, y1);ctx.lineTo(x2, y2);ctx.stroke();}
+
+function draw_rectangle(x1, y1, x2, y2) {ctx.strokeStyle = pen_color;ctx.fillStyle = brush_color;
+ctx.lineWidth = pen_size;ctx.globalAlpha = image_alpha;ctx.fillRect(x1, y1, x2 - x1, y2 - y1);  
+ctx.strokeRect(x1, y1, x2 - x1, y2 - y1)}
+
+function draw_roundrect(x1, y1, x2, y2) {var radius = 5;ctx.strokeStyle = pen_color;
+ctx.fillStyle = brush_color;ctx.lineWidth = pen_size;
+ctx.globalAlpha = image_alpha;ctx.beginPath();ctx.moveTo(x1 + radius, y1);
+ctx.lineTo(x2 - radius, y1);ctx.quadraticCurveTo(x2, y1, x2, y1 + radius);
+ctx.lineTo(x2, y2 - radius);ctx.quadraticCurveTo(x2, y2, x2 - radius, y2);
+ctx.lineTo(x1 + radius, y2);ctx.quadraticCurveTo(x1, y2, x1, y2 - radius);
+ctx.lineTo(x1, y1 + radius);ctx.quadraticCurveTo(x1, y1, x1 + radius, y1);ctx.fill();
+ctx.stroke();}
+
+function draw_triangle(x1, y1, x2, y2, x3, y3) {
+ctx.strokeStyle = pen_color;ctx.fillStyle = brush_color;ctx.lineWidth = pen_size;
+ctx.globalAlpha = image_alpha;
+ctx.beginPath();ctx.moveTo(x1, y1);ctx.lineTo(x2, y2);ctx.lineTo(x3, y3);ctx.closePath();
+ctx.fill();ctx.stroke();}
+
+function draw_text(x, y, string) {y += font_size; ctx.fillStyle = font_color;ctx.globalAlpha = image_alpha;
+ctx.font = font_style + ' ' + font_size + 'pt ' + font_name;ctx.textAlign = font_align;
+if (font_angle !== 0) {ctx.translate(x, y);ctx.rotate((font_angle * Math.PI) / 180);x = 0;y = 0;}
+ctx.fillText(string, x, y);if (font_angle !== 0) {ctx.rotate((-font_angle * Math.PI) / 180);
+ctx.translate(-x, -y);}}
+
+function draw_text_ext(x, y, text, sep, maxWidth) {y += font_size;ctx.fillStyle = font_color;
+ctx.globalAlpha = image_alpha;
+ctx.font = font_style + ' ' + font_size + 'pt ' + font_name;ctx.textAlign = font_align;
+if (font_angle !== 0) {ctx.save();ctx.translate(x, y);ctx.rotate((font_angle * Math.PI) / 180);
+x = 0;y = 0;}let words = text.split(' ');let lines = [];let currentLine = '';
+for (let i = 0; i < words.length; i++) {let testLine = currentLine + words[i] + ' ';
+let metrics = ctx.measureText(testLine);if (maxWidth === -1 || metrics.width <= maxWidth) {
+currentLine = testLine;} else {lines.push(currentLine);currentLine = words[i] + ' ';}}
+lines.push(currentLine);for (let i = 0; i < lines.length; i++) {
+let lineY = y + i * (sep === -1 ? font_size : sep);ctx.fillText(lines[i], x, lineY);}
+if (font_angle !== 0) {ctx.restore();}}
+
+//¡POLIGONOS!
+var polygon_x_asd, polygon_y_asd; // Variables globales para las coordenadas del primer vértice
+
+function draw_polygon_begin() {polygon_x_asd = undefined;polygon_y_asd = undefined;
+ctx.beginPath();}
+
+function draw_polygon_vertex(x, y) {
+if (typeof polygon_x_asd === 'undefined' && typeof polygon_y_asd === 'undefined') {
+polygon_x_asd = x;polygon_y_asd = y;ctx.moveTo(x, y);} else {
+ctx.lineTo(x, y);}}
+
+function draw_polygon_end() {ctx.lineTo(polygon_x_asd, polygon_y_asd);
+ctx.strokeStyle = pen_color;ctx.lineWidth = pen_size;ctx.fillStyle = brush_color; 
+ctx.globalAlpha = image_alpha;ctx.fill();ctx.stroke();}
+
+function draw_cube( x, y, length, rotation){
+  ///draw_cube( x, y, length, fugax, fugay, rotation);
+//Ejemplo: draw_cube(x,y,50,direction,c_fuchsia);
+
+var posx00=x;
+var posy00=y;
+var width00=length/2;
+var height00=length;
+var length00=length;
+var pfugax00=room_width/2;
+var pfugay00=room_height/2;
+var rotation00=rotation;
+
+//Diagonal
+diagonal00=sqrt(power(length00,2)+power(height00,2));
+
+//Punto central
+pcenx00=posx00+(diagonal00/2)*cos(315*pi/180);
+pceny00=posy00-(diagonal00/2)*sin(315*pi/180);
+
+//Puntos del rectangulo
+direction00=rotation00;
+distancia00=diagonal00/2;
+puntox00=pcenx00;
+puntoy00=pceny00;
+pax00=puntox00+distancia00*cos((direction00+45)*pi/180);
+pay00=puntoy00-distancia00*sin((direction00+45)*pi/180);
+pbx00=puntox00+distancia00*cos((direction00+45*3)*pi/180);
+pby00=puntoy00-distancia00*sin((direction00+45*3)*pi/180);
+pcx00=puntox00+distancia00*cos((direction00+45*5)*pi/180);
+pcy00=puntoy00-distancia00*sin((direction00+45*5)*pi/180);
+pdx00=puntox00+distancia00*cos((direction00+45*7)*pi/180);
+pdy00=puntoy00-distancia00*sin((direction00+45*7)*pi/180);
+
+var i=width00;
+direction00=point_direction(pcenx00,pceny00,pfugax00,pfugay00);
+distanciax00=point_distance(pcenx00,pceny00,pfugax00,pfugay00)+0.00001;
+pcenx200=pcenx00+i*cos(direction00*pi/180);
+pceny200=pceny00-i*sin(direction00*pi/180);
+
+distancia100=point_distance(pcenx00,pceny00,pfugax00,pfugay00);
+if(distancia100<=i){pcenx200=pfugax00;pceny200=pfugay00}
+
+porcentaje000=i*100/distanciax00;
+diagonal000=(diagonal00/2)-porcentaje000*(diagonal00/2)/100;
+
+widthmin=(width00);
+if(distancia100<=i){diagonal000=widthmin}
+if(diagonal000<widthmin){diagonal000=widthmin}
+
+pex00=pcenx200+diagonal000*cos((rotation00+45)*pi/180);
+pey00=pceny200-diagonal000*sin((rotation00+45)*pi/180);
+pfx00=pcenx200+diagonal000*cos((rotation00+45*3)*pi/180);
+pfy00=pceny200-diagonal000*sin((rotation00+45*3)*pi/180);
+pgx00=pcenx200+diagonal000*cos((rotation00+45*5)*pi/180);
+pgy00=pceny200-diagonal000*sin((rotation00+45*5)*pi/180);
+phx00=pcenx200+diagonal000*cos((rotation00+45*7)*pi/180);
+phy00=pceny200-diagonal000*sin((rotation00+45*7)*pi/180);
+
+
+var pen_color_prev = pen_color;
+pen_color = "transparent";
+//6
+draw_triangle(phx00,phy00,pgx00,pgy00,pfx00,pfy00);
+draw_triangle(phx00,phy00,pex00,pey00,pfx00,pfy00);
+
+//5
+draw_triangle(pax00,pay00,pex00,pey00,phx00,phy00);
+draw_triangle(pax00,pay00,pdx00,pdy00,phx00,phy00);
+
+//4
+draw_triangle(pcx00,pcy00,pgx00,pgy00,phx00,phy00);
+draw_triangle(pcx00,pcy00,pdx00,pdy00,phx00,phy00);
+
+//3
+draw_triangle(pbx00,pby00,pfx00,pfy00,pgx00,pgy00);
+draw_triangle(pbx00,pby00,pcx00,pcy00,pgx00,pgy00);
+
+//2
+draw_triangle(pax00,pay00,pex00,pey00,pfx00,pfy00);
+draw_triangle(pax00,pay00,pbx00,pby00,pfx00,pfy00);
+
+//1
+draw_triangle(pax00,pay00,pbx00,pby00,pcx00,pcy00);
+draw_triangle(pax00,pay00,pdx00,pdy00,pcx00,pcy00);
+
+pen_color =pen_color_prev;
+
+var image_alpha_prev = image_alpha;
+image_alpha = image_alpha/2;
+//6
+x1=pax00;y1=pay00;x2=pbx00;y2=pby00;
+draw_line(x1,y1,x2,y2);
+//Linea B-C
+x1=pbx00;y1=pby00;x2=pcx00;y2=pcy00;
+draw_line(x1,y1,x2,y2);
+//Linea C-D
+x1=pcx00;y1=pcy00;x2=pdx00;y2=pdy00;
+draw_line(x1,y1,x2,y2);
+//Linea D-A
+x1=pdx00;y1=pdy00;x2=pax00;y2=pay00;
+draw_line(x1,y1,x2,y2);
+
+//5
+//Linea E-F
+x1=pex00;y1=pey00;x2=pfx00;y2=pfy00;
+draw_line(x1,y1,x2,y2);
+//Linea F-G
+x1=pfx00;y1=pfy00;x2=pgx00;y2=pgy00;
+draw_line(x1,y1,x2,y2);
+//Linea G-H
+x1=pgx00;y1=pgy00;x2=phx00;y2=phy00;
+draw_line(x1,y1,x2,y2);
+//Linea H-E
+x1=phx00;y1=phy00;x2=pex00;y2=pey00;
+draw_line(x1,y1,x2,y2);
+
+//4
+//Linea A-E
+x1=pax00;y1=pay00;x2=pex00;y2=pey00;
+draw_line(x1,y1,x2,y2);
+//Linea B-F
+x1=pbx00;y1=pby00;x2=pfx00;y2=pfy00;
+draw_line(x1,y1,x2,y2);
+//Linea C-G
+x1=pcx00;y1=pcy00;x2=pgx00;y2=pgy00;
+draw_line(x1,y1,x2,y2);
+//Linea D-H
+x1=pdx00;y1=pdy00;x2=phx00;y2=phy00;
+draw_line(x1,y1,x2,y2);
+
+image_alpha = image_alpha_prev;
+
+}
+
+function draw_getpixel(x, y) {
+  var x = x;
+  var y = y;
+  // Obtenemos el color del píxel
+  var pixel = ctx.getImageData(x, y, 1, 1).data;
+  // Convertimos el color a hexadecimal
+  var hex = "#"+pixel[0].toString(16).padStart(2, "0")+""+pixel[1].toString(16).padStart(2, "0")+""+pixel[2].toString(16).padStart(2, "0");
+  // Devolvemos el color en hexadecimal
+  return hex;
+}
+
+<end_script>
+
+
+<star_script>
+  //sistema.js
+  //Eventos create
+  //textarea_create_init
+  //textarea_create_code
+  //textarea_create_end
+  ///#-/*
+  background_color = c_black;
+
+  //*/
+function draw(){
+  //Evento draw
+  //textarea_draw_init
+  //textarea_draw_code
+  //textarea_draw_end
+  ///#-/*
+  pen_color = c_aqua;
+  draw_line(0,0,256,256)
+  image_alpha = 1;
+  brush_color = c_yellow;
+  draw_rectangle(128,128,128+32,128+32);
+
+  pen_color = c_white;
+  brush_color = c_green;
+  draw_circle(256,256,16);
+  brush_color = c_blue;
+  draw_circle(256+128+256,256,5);
+
+  brush_color = c_red;
+  pen_color = c_aqua;
+  draw_rectangle(room_width,room_height,room_width-32,room_height-32)
+
+  image_alpha = 1;
+  color = draw_getpixel(mouse_x,mouse_y);
+  brush_color = color;
+  draw_rectangle(0,0,32,32);
+
+
+  pen_color = c_white;
+  draw_line(room_width/2,0,room_width/2,room_height);
+  draw_line(0,room_height/2,room_width,room_height/2);
+
+  x1 = mouse_x;
+  y1 = mouse_y;
+  font_size = 24;
+
+  x2 = room_width;
+  y2 = room_height/2;
+  pen_color = c_red;
+  font_color = pen_color;
+  calculo = floor(point_distance(x1,y1,x2,y2));
+  draw_line(x1,y1,x2,y2);
+  draw_text(x1+128,y1,calculo);
+  draw_circle(x2,y2,32);
+
+  x2 = 0;
+  y2 = room_height/2;
+  pen_color = c_aqua;
+  font_color = pen_color;
+  calculo = floor(point_distance(x1,y1,x2,y2));
+  draw_line(x1,y1,x2,y2);
+  draw_text(x1-128,y1,calculo);
+  draw_circle(x2,y2,32);
+
+  x2 = room_width/2;
+  y2 = 0;
+  pen_color = c_green;
+  font_color = pen_color;
+  calculo = floor(point_distance(x1,y1,x2,y2));
+  draw_line(x1,y1,x2,y2);
+  draw_text(x1,y1-128,calculo);
+  draw_circle(x2,y2,32);
+
+  x2 = room_width/2;
+  y2 = room_height;
+  pen_color = c_yellow;
+  font_color = pen_color;
+  calculo = floor(point_distance(x1,y1,x2,y2));
+  draw_line(x1,y1,x2,y2);
+  draw_text(x1,y1+128,calculo);
+  draw_circle(x2,y2,32);
+
+
+  x1 = room_width/3;
+  y1 = room_height/3;
+  x2 = x1*2;
+  y2 = y1*2;
+  brush_color = "transparent";
+  pen_color = c_lime;
+  draw_rectangle(x1,y1,x2,y2);
+
+  //*/
+}
+
+function draw_prev(){
+  // Borra todo el canvas.
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  brush_color_prev = brush_color;
+  brush_color = background_color;
+  pen_color_prev = pen_color;
+  pen_color = background_color;
+  draw_rectangle(0,0, canvas.width, canvas.height);
+  brush_color = brush_color_prev;
+  pen_color = pen_color_prev;
+
+  mouse_x = mouse_in_element(canvas).relativeX;
+  mouse_y = mouse_in_element(canvas).relativeY;
+
+  room_width = canvas.width;
+  room_height = canvas.height;
+
+  if(direction>360){direction-=360}
+  if(direction<0){direction += 360}
+}
+
+function dibujar() {
+  draw_prev();
+  draw();
+  window.requestAnimationFrame(dibujar);
+  }
+  
+  dibujar();
+  onResize();
+<end_script>
+
+<!-- Boton full screen -->
+
+
+</body>
+</html>`;
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  var menuFlotante = document.getElementById("menuFlotante");
+menuFlotante.on = 0;
+menuFlotante.alineacion = "right";
+menuFlotante.activador = undefined;
+var menuFlotante2 = document.getElementById("menuFlotante2");
+menuFlotante2.on = 0;
+menuFlotante2.alineacion = "right";
+menuFlotante2.activador = undefined;
+
+// Oculta el menú cuando el usuario hace clic fuera de él
+document.addEventListener("click", (event) => {
+  if (!event.target.closest("#menuFlotante") && !event.target.closest("#menuFlotante2")) {
+    if(menuFlotante.on >= 2){menuFlotante.style.display = "none";menuFlotante.on=0}
+    if(menuFlotante.on > 0){menuFlotante.on+=1}
+  }
+  if (!event.target.closest("#menuFlotante2")) {
+    if(menuFlotante2.on >= 2){menuFlotante2.style.display = "none";menuFlotante2.on=0}
+    if(menuFlotante2.on > 0){menuFlotante2.on+=1}
+  }
+});
+
+var configuracionDefault = {
+  widthLandscape: 640,
+  heightLandscape: 480,
+  widthPortrait: 640,
+  heightPortrait: 480,
+  borderColor: "#00ff00",
+  borderSize: 0,
+  borderRadius: 0,
+  adaptar: false,
+  limitar: true,
+  cover: false,
+  strech: false,
+  centerH: true,
+  centerV: false,
+  bodyColor: "#000000",
+  botonFs: true,
+}
+
+var configuracion = Object.assign({}, configuracionDefault);
+
+var con_InputElements = {};
+for(key in configuracion){con_InputElements[key] = document.getElementById("input_"+key)}
+
+function configuracion_asd(){
+	menuFlotante.alineacion = "right";
+	activar_menuFlotante(menuFlotante2,div_configuracion,menuFlotante_configuracion);
+	menuActual = "configuracion";
+
+  for(key in configuracion){
+    con_InputElements[key] = document.getElementById("input_"+key);
+    con_InputElements[key].value = configuracion[key];
+    con_InputElements[key].checked = configuracion[key];
+  }
+
+	var button_aplicar = document.getElementById("button_aplicar");
+	addClickListener(button_aplicar, aplicar_asd);
+	var button_cancelar = document.getElementById("button_cancelar");
+	addClickListener(button_cancelar, cancelar_asd);
+	var button_default = document.getElementById("button_default");
+	addClickListener(button_default, default_asd);
+}
+
+var button_opciones = document.getElementById("button_opciones");
+var div_exportar = document.getElementById("div_exportar");
+
+addClickListener(button_opciones, opciones_asd);
+function opciones_asd(){
+	menuFlotante.alineacion = "bottom";
+	activar_menuFlotante(menuFlotante,button_opciones,menuFlotante_opciones);
+  var div_configuracion = document.getElementById("div_configuracion");
+  addClickListener(div_configuracion, configuracion_asd);
+  div_exportar = document.getElementById("div_exportar");
+  addClickListener(div_exportar, exportar_asd);
+}
+
+var button_tools = document.getElementById("button_tools");
+addClickListener(button_tools, tools_asd);
+function tools_asd(){
+  menuFlotante.alineacion = "bottom";
+  activar_menuFlotante(menuFlotante,button_tools,menuFlotante_tools);
+  input_getColor = document.getElementById("input_getColor");
+  var td_copy = document.getElementById("td_copy");
+  addClickListener(td_copy, function_td_copy);}
+
+function function_td_copy(){copiarAlPortaPapeles('"'+input_getColor.value+'"');}
+
+function activar_menuFlotante(menuFlotante,activador,string){
+  var menuFlotante = menuFlotante;
+  menuFlotante.activador = activador;
+  const rect = menuFlotante.activador.getBoundingClientRect();
+  menuFlotante.style.display = "block";
+  menuFlotante.on = 1;
+  menuFlotante.innerHTML = string;
+  var x2 = 0;
+  if(menuFlotante.alineacion == "bottom"){x2 = rect.x;
+  	menuFlotante.style.top = rect.y+rect.height+2+"px";}
+  else{x2 = rect.x+rect.width;menuFlotante.style.top = rect.y+"px";}
+  var width = menuFlotante.getBoundingClientRect().width;
+  var x3 = document.body.getBoundingClientRect().width-32;
+  while(x2+width>x3){x2-=1}
+  menuFlotante.style.left = x2+"px";}
+
+function aplicar_asd(){
+  if(menuActual == "configuracion")
+  {
+    for(key in configuracion){
+      if(con_InputElements[key].type == "checkbox")
+      {
+        configuracion[key] = con_InputElements[key].checked;
+      }
+      else{
+      configuracion[key] = con_InputElements[key].value}
+    }
+    menuFlotante2.style.display = "none";
+  }
+  
+}
+
+function cancelar_asd(){
+  if(menuActual == "configuracion")
+  {
+    menuFlotante2.style.display = "none";
+  }
+}
+
+function default_asd(){
+  if(menuActual == "configuracion")
+  {
+    for(key in configuracionDefault){
+      con_InputElements[key] = document.getElementById("input_"+key);
+      con_InputElements[key].value = configuracionDefault[key];
+      con_InputElements[key].checked = configuracionDefault[key];
+    }
+  }
+}
+
+var menuFlotante_tools = `
+  <table style="width: 128px;border: 1px solid red">
+  <tr>
+  <td><input id="input_getColor" type="color" name="" style="width: 64px;margin:0px;"></td>
+  <td id="td_copy" style="border:1px solid yellow;cursor: pointer;">Copy</td>
+  </tr>
+  </table>
+`;
+
+var menuFlotante_opciones = `
+	<div class="menuFlotante_opciones" id="div_nuevo">Nuevo</div>
+	<hr>
+	<div class="menuFlotante_opciones" id="div_abrir">Abrir</div>
+	<hr>
+	<div class="menuFlotante_opciones" id="div_exportar">Exportar</div>
+	<hr>
+	<div class="menuFlotante_opciones" id="div_manual">Documentación</div>
+	<hr>
+	<div class="menuFlotante_opciones" id="div_configuracion">Configuracion</div>
+`;
+
+var menuFlotante_configuracion = `
+
+Configuración
+
+<table>
+<tr>
+  <td>
+      <table>
+            <tr>Landscape</tr>
+            <tr>
+                <td id="c1">Width:</td>
+                <td id="c2"> <input id="input_widthLandscape"; type="number" ></td>
+            </tr>
+            <tr>
+                <td id="c1">Height:</td>
+                <td id="c2"><input id="input_heightLandscape"; type="number" ></td>
+            </tr>
+      </table>
+  </td>
+
+  <td>
+      <table>
+            <tr>Portrait</tr>
+            <tr>
+                <td id="c1">Width:</td>
+                <td id="c2"> <input id="input_widthPortrait"; type="number" ></td>
+            </tr>
+
+            <tr>
+                <td id="c1">Height:</td>
+                <td id="c2"><input id="input_heightPortrait"; type="number" ></td>
+            </tr>
+      </table>
+   </td>
+</tr>
+  <hr>
+<tr>
+  <td>
+    <table>
+      <tr>
+          <td id="c1">Border:</td>
+          <td id="c2"><input id="input_borderColor"; type="color" style="height: 15px; margin:0px;padding:0px; width: 100%;"></td>    
+      </tr>
+
+      <tr>
+          <td id="c1">Size:</td>
+          <td id="c2"><input id="input_borderSize"; type="number"></td>    
+      </tr>
+
+      <tr>
+          <td id="c1">Radius:</td>
+          <td id="c2"><input id="input_borderRadius"; type="number"></td>    
+      </tr>
+
+      <tr>
+          <td id="c1">Adaptar:</td>
+          <td id="c2"><input id="input_adaptar"; type="checkbox"></td>    
+      </tr>
+    </table>
+</td>
+
+<td>
+  <table>
+      <tr>
+          <td id="c1">Limitar:</td>
+          <td id="c2"><input id="input_limitar"; type="checkbox"></td>    
+      </tr>
+
+      <tr>
+          <td id="c1">Cover:</td>
+          <td id="c2"><input id="input_cover"; type="checkbox"></td>    
+      </tr>
+      <tr>
+          <td id="c1">Strech:</td>
+          <td id="c2"><input id="input_strech"; type="checkbox"></td>    
+      </tr>
+  </table>
+</td>
+<table>
+ <td>
+ <table>
+  <tr>
+      <td id="c1">center H:</td>
+      <td id="c2"><input id="input_centerH"; type="checkbox"></td>    
+  </tr>
+  <tr>
+      <td id="c1">center V:</td>
+      <td id="c2"><input id="input_centerV"; type="checkbox"></td>    
+  </tr>
+  </table>
+</td>
+
+<td>
+<table>
+  <tr>
+      <td id="c1">bodyColor:</td>
+      <td id="c2"><input id="input_bodyColor"; type="color" style="height: 15px; margin:0px;padding:0px; width: 100%;"></td>    
+  </tr>
+  <tr>
+      <td id="c1">botonFS:</td>
+      <td id="c2"><input id="input_botonFs"; type="checkbox"></td>     
+  </tr>
+  </table>
+</td>
+ </table>
+  
+</table>
+
+<hr>
+  <div id="dv_aceptar_cancelar">
+    <button id="button_aplicar">Aplicar</button>
+    <button id="button_cancelar">Cancelar</button>
+    <button id="button_default">Default</button>
+</div>
+ 
+`;
+
+
+
+</script>
+
+<script type="text/javascript">
+  //main.js
+var iframe = document.getElementById("mi-iframe");
+var textarea = document.getElementById("textarea");
+var button_play = document.getElementById("button_play");
+var button_export = document.getElementById("button_export");
+addClickListener(button_play, play_asd);
+//addClickListener(button_export, export_asd);
+
+var button_create = document.getElementById("button_create");
+var button_draw = document.getElementById("button_draw");
+button_create.style.background = "green";
+button_create.style.color = "black";
+addClickListener(button_create, create_asd);
+addClickListener(button_draw, draw_asd);
+textarea.value = "";
+var textarea_create = "";
+var textarea_draw = "";
+var textarea_estado = "create";
+var codigo_juego_asd = "";
+
+textarea.addEventListener("input", function(event) {
+if(textarea_estado == "draw"){textarea_draw = textarea.value}
+if(textarea_estado == "create"){textarea_create = textarea.value}
+});
+
+function create_asd(element){
+  if(textarea_estado == "draw")
+  {
+    textarea_estado = "create";
+    textarea_draw = textarea.value;
+    textarea.value = textarea_create;
+    button_create.style.background = "green";
+    button_create.style.color = "black";
+    button_draw.style.background = "black";
+    button_draw.style.color = "lime";
+  }
+}
+
+function draw_asd(element){
+  if(textarea_estado == "create")
+  {
+    textarea_estado = "draw";
+    textarea_create = textarea.value;
+    textarea.value = textarea_draw;
+    button_draw.style.background = "green";
+    button_draw.style.color = "black";
+    button_create.style.background = "black";
+    button_create.style.color = "lime";
+  }
+}
+
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
+
+function exportar_asd(){
+  uploadHtmlText()
+  download("index.html", codigo_juego_asd);
+}
+
+function play_asd(){
+  uploadHtmlText();
+  iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(codigo_juego_asd);
+}
+
+function matrix_asd(){
+  iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(web_matrix);
+}
+
+function fullScreenElement(element) {
+  if (!document.fullscreenElement) {
+    // Si el documento no está en pantalla completa, solicita la pantalla completa
+    element.requestFullscreen()
+      .then(() => {
+        // Éxito al entrar en pantalla completa
+        console.log('Elemento en pantalla completa');
+      })
+      .catch((error) => {
+        // Error al entrar en pantalla completa
+        console.error('Error al entrar en pantalla completa:', error);
+      });
+  } else {
+    // Si el documento está en pantalla completa, sal de pantalla completa
+    document.exitFullscreen()
+      .then(() => {
+        // Éxito al salir de pantalla completa
+        console.log('Salida de pantalla completa');
+      })
+      .catch((error) => {
+        // Error al salir de pantalla completa
+        console.error('Error al salir de pantalla completa:', error);
+      });
+  }
+}
+
+
+//Pantalla completa
+const button_fs = document.getElementById('button_fs'); // Reemplaza 'elementId' con el ID de tu elemento
+//addClickListener(button_screen, fullScreenElement(iframe));
+button_fs.addEventListener('click', function() {
+  fullScreenElement(iframe);
+});
+
+
+var button_open = document.getElementById("button_open");
+//addClickListener(button_open, open_asd);
+
+function open_asd(){
+
+}
+
+function uploadHtmlText(){
+  codigo_configuracion = "";
+  for(key in configuracion){
+    if(key == "botonFs"){codigo_configuracion += "botonFs = true;\n"}
+    else if(key == "bodyColor"){
+    codigo_configuracion += "body.style.backgroundColor='"+configuracion[key]+"';\n";}
+    else if(key == "borderColor"){codigo_configuracion+="canvas."+key+" = '"+configuracion[key]+"';\n";}
+    else{codigo_configuracion+="canvas."+key+" = "+configuracion[key]+";\n";}}
+
+  codigo_juego_asd = stringM;
+  codigo_juego_asd = string_replace_all(codigo_juego_asd,"star_script","script");
+  codigo_juego_asd = string_replace_all(codigo_juego_asd,"end_script","/script");
+  codigo_juego_asd = codigo_juego_asd.replace("//textarea_create_code",textarea_create);
+  codigo_juego_asd = codigo_juego_asd.replace("//textarea_draw_code",textarea_draw);
+  codigo_juego_asd = string_replace_all(codigo_juego_asd,"///#-","");
+  codigo_juego_asd = codigo_juego_asd.replace("//#-codigoConfiguracion:",codigo_configuracion);
+  if(configuracion.botonFs){codigo_juego_asd = codigo_juego_asd.replace("<!-- Boton full screen -->",codigoFullScreen);}}
+
+var codigoFullScreen = `
+<!-- Boton full screen -->
+      <div id="full_screen_button"></div>
+      <style>
+      #full_screen_button{background: transparent; width: 32px;height: 32px;position: absolute;top: 5px;right: 5px;border: 1px solid white;border-radius: 5px;}
+      </style>
+      <star_script>
+      color = "gray";
+      full_screen_button = document.getElementById("full_screen_button");
+      var touchDevice = ('ontouchstart' in document.documentElement);
+      if(touchDevice){full_screen_button.addEventListener("touchstart", function(){toggleFullScreen()},false);}else{
+      full_screen_button.addEventListener("mousedown", function(){toggleFullScreen()},false);}
+      function toggleFullScreen() {
+              if ((document.fullScreenElement && document.fullScreenElement !== null) ||  
+              (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+              if (document.documentElement.requestFullScreen) {
+              document.documentElement.requestFullScreen();
+                  } else if (document.documentElement.mozRequestFullScreen) {
+              document.documentElement.mozRequestFullScreen();
+              } else if (document.documentElement.webkitRequestFullScreen) {
+              document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+              }
+              } else {
+              if (document.cancelFullScreen) {
+              document.cancelFullScreen();
+              } else if (document.mozCancelFullScreen) {
+              document.mozCancelFullScreen();
+              } else if (document.webkitCancelFullScreen) {
+              document.webkitCancelFullScreen();
+          }}}
+      <end_script>
+`;
+
+codigoFullScreen = string_replace_all(codigoFullScreen,"star_script","script");
+codigoFullScreen = string_replace_all(codigoFullScreen,"end_script","/script");
+
+
+web_matrix = `
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <title>ikigaiJS</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+</head>
+<body>
+<canvas id="canvas" width="853" height="480"></canvas>
+<style>
+  *{
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+  }
+  body{
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  canvas{
+    background: black;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+<star_script>
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+
+    var w = canvas.width;
+    var h = canvas.height;
+
+    const cols = Math.floor(w / 20)+1;
+    const posicion_y = Array(cols).fill(0);
+
+  function draw(){
+    ctx.fillStyle = "black";
+    ctx.globalAlpha = 0.1;
+    ctx.fillRect(0,0,w,h);
+    ctx.fillStyle = "#0f0";
+    ctx.font = "15pt monospace";
+        ctx.globalAlpha = 1;
+    posicion_y.forEach((y,ind)=>{
+      const text = String.fromCharCode(Math.random() * 128);
+      const x = ind * 20;
+      ctx.fillText(text, x, y);
+      if(y>100+Math.random()*10000)
+        {
+          posicion_y[ind] = 0;
+        }
+        else posicion_y[ind] = y+20;
+    });
+  }
+  setInterval(draw,50);
+<end_script> 
+</body>
+</html>
+`;
+
+web_matrix = string_replace_all(web_matrix,"star_script","script");
+web_matrix = string_replace_all(web_matrix,"end_script","/script");
+
+matrix_asd();
+</script>
+
+<script>
+  div_mensaje = document.getElementById("div_mensaje");
+div_mensaje.time = 0;
+div_mensaje.bottom = 0;
+var intervaloMensaje = undefined;
+
+function mostrarMensaje(str)
+{
+	div_mensaje.style.display = "block";
+	div_mensaje.innerHTML = str;
+	div_mensaje.time = 100;
+	div_mensaje.bottom = 0;
+	div_mensaje.style.bottom = div_mensaje.bottom+"px";
+	intervaloMensaje = setInterval(tiempoMensaje, 1000/30);
+}
+
+function tiempoMensaje(){
+	if(div_mensaje.time)
+	{
+		div_mensaje.time-=1;
+		if(!div_mensaje.time)
+		{
+			div_mensaje.style.display="none";
+			clearInterval(intervaloMensaje);
+		}
+		div_mensaje.bottom += 2*(div_mensaje.bottom<10);
+		div_mensaje.style.bottom = div_mensaje.bottom+"px";
+	}
+}
+
+</script>
+
+
+
+
+</body>
+</html>
