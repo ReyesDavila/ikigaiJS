@@ -231,6 +231,8 @@ body::-webkit-scrollbar-thumb {
 
 
 <script>
+//Borrando consola
+console.clear();
 
 /*
 var body = document.body;
@@ -645,8 +647,8 @@ function ord(str){return str.charCodeAt()}
 function real(str){return Number(str)}
 function string(data){return String(data)}
 function string_length(str){return str.length}
-function string_pos(substr,str){return str.indexOf(substr)+1;}
-function string_copy(str,index,count){num=index-1;return str.substr(num,count)}
+function string_pos(substr,str){return str.indexOf(substr);}
+function string_copy(str,index,count){if(index<1){index=1};num=index-1;return str.substr(num,count+1)}
 function string_delete(str,index,count){str1 = str.substr(0, index);str2 = str.substr(index+count, str.length-count);str3 = str1+str2;return str3;}
 function string_insert(substr,str,index){num=index-1;return str.slice(0, num) + substr + str.slice(num);}
 function string_replace(str,substr,newstr){return str.replace(substr,newstr);}
@@ -662,17 +664,68 @@ function string_repeat(str,count){return str.repeat(count);}
 function string_lettersdigits(str){return str.replace(/[^a-zA-Z]/g, "");}
 function execute_string(string) {return eval(string)}
 
+function ds_list_create() {return [];}
+function ds_list_destroy(list) {list.length = 0;}
+function ds_list_add(list, value) {list.push(value);}
+function ds_list_insert(list, pos, value) {list.splice(pos, 0, value);}
+function ds_list_delete(list, pos) {if (pos >= 0 && pos < list.length) {list.splice(pos, 1);}}
+function ds_list_size(list) {return list.length;}
+function ds_list_find_value(list, pos) {if (pos >= 0 && pos < list.length) {return list[pos];} return undefined;}
+function ds_list_replace(list, pos, value) {if (pos >= 0 && pos < list.length) {list[pos] = value;}}
+function ds_list_clear(list) {list.length = 0;}
+
+function array_set(array, pos, value) {array[pos] = value;}
+function array_length_1d(array) {return array.length;}
+
+function array_create(size, value) {return new Array(size).fill(value);}
+function array_copy(array) {return array.slice();}
+function array_equals(array1, array2) {return JSON.stringify(array1) === JSON.stringify(array2);}
+function array_get(array, pos) {return array[pos];}
+function array_set(array, pos, value) {array[pos] = value;}
+function array_push(array, value) {array.push(value);}
+function array_pop(array) {return array.pop();}
+function array_shift(array) {return array.shift();}
+function array_insert(array, pos, value) {array.splice(pos, 0, value);}
+function array_delete(array, pos) {array.splice(pos, 1);}
+function array_get_index(array, value) {return array.indexOf(value);}
+function array_contains(array, value) {return array.indexOf(value) !== -1;}
+function array_contains_ext(array, value, start, end) {return array.slice(start, end).includes(value);}
+function array_sort(array) {return array.slice().sort();}
+function array_reverse(array) {return array.slice().reverse();}
+function array_shuffle(array) {let shuffled = array.slice(); for (let i = shuffled.length - 1; i > 0; i--) {const j = Math.floor(Math.random() * (i + 1)); [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];} return shuffled;}
+function array_length(array) {return array.length;}
+function array_resize(array, size, value) {if (size < array.length) {return array.slice(0, size);} else if (size > array.length) {return array.concat(new Array(size - array.length).fill(value));} else {return array.slice();}}
+function array_length_1d(array) {return array.length;}
+function array_length_2d(array) {return array.length;}
+function array_height_2d(array) {return array[0] ? array[0].length : 0;}
+function array_first(array) {return array[0];}
+function array_last(array) {return array[array.length - 1];}
+
+function splitText(str, delimiter) {
+  var salida = [];
+  var index = 1;
+  var count = string_pos(delimiter,str);
+  var cantidad = string_count(delimiter,str);
+  while (cantidad) {
+    cantidad-=1
+    index = 1;
+    if(!count){count = string_length(str)};
+    array_set(salida,array_length_1d(salida),string_copy(str, index, count-1));
+    index = count + array_length_1d(delimiter);
+    str = string_copy(str, index+1, string_length(str));
+    count = string_pos(delimiter,str);
+  }
+  array_set(salida,array_length_1d(salida),str);
+  return salida;
+}
+
 function draw_pixel(x, y) {ctx.fillStyle = pen_color;ctx.globalAlpha = image_alpha;ctx.fillRect(x, y, pen_size, pen_size);}
-
 function draw_circle(x, y, r) {ctx.strokeStyle = pen_color;ctx.fillStyle = brush_color;ctx.lineWidth = pen_size;ctx.globalAlpha = image_alpha;ctx.beginPath();ctx.arc(x, y, r, 0, 2 * Math.PI);ctx.fill();ctx.stroke();}
-
 function draw_line(x1, y1, x2, y2) {ctx.strokeStyle = pen_color;  ctx.lineWidth = pen_size;
 ctx.globalAlpha = image_alpha;ctx.beginPath();ctx.moveTo(x1, y1);ctx.lineTo(x2, y2);ctx.stroke();}
-
 function draw_rectangle(x1, y1, x2, y2) {ctx.strokeStyle = pen_color;ctx.fillStyle = brush_color;
 ctx.lineWidth = pen_size;ctx.globalAlpha = image_alpha;ctx.fillRect(x1, y1, x2 - x1, y2 - y1);  
 ctx.strokeRect(x1, y1, x2 - x1, y2 - y1)}
-
 function draw_roundrect(x1, y1, x2, y2) {var radius = 5;ctx.strokeStyle = pen_color;
 ctx.fillStyle = brush_color;ctx.lineWidth = pen_size;
 ctx.globalAlpha = image_alpha;ctx.beginPath();ctx.moveTo(x1 + radius, y1);
